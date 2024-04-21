@@ -1,9 +1,8 @@
 extends Node2D
 
-
 var game_state = 0
-
-var timer_length = .7
+var timer_length = 4
+var offset = 380
 
 const ROPE = preload("res://scenes/environment/rope.tscn")
 
@@ -25,6 +24,14 @@ func spawn_enemy():
 	#descend from rope
 	#on rope below height, they they're destroyed and replaced with actual enemy.
 	#if time, tween from rigidbody angle to 0
+	print("spawn")
 	var rope = ROPE.instantiate()
-	rope.position = Vector2(player.position.x,-30)
+	var dir = [1,-1].pick_random()
+	rope.direction = dir
+	get_parent().add_child(rope)
+	#rope.position = Vector2(player.position.x,-30)
+	
+	rope.position = Vector2(500+dir*offset*-1,-30)	#offset to one side or other
+	
+	
 	
