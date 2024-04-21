@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bro4a2mh46h6t"]
+
+[ext_resource type="Script" path="res://scripts/rope.gd" id="1_rbe5y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hgwcf"]
+size = Vector2(2, 2)
+
+[node name="Rope" type="StaticBody2D"]
+rotation = -1.5708
+script = ExtResource("1_rbe5y")
+rope_length = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hgwcf")

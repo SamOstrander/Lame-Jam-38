@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvsb2bryj3n26"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_1ucmo"]
+[ext_resource type="PackedScene" uid="uid://bro4a2mh46h6t" path="res://scenes/environment/rope.tscn" id="2_y74xw"]
+[ext_resource type="Script" path="res://scripts/EnemySpawner.gd" id="3_mb6vq"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_1ucmo")
+
+[node name="TestStage" type="Node2D" parent="."]
+
+[node name="Rope" parent="TestStage" instance=ExtResource("2_y74xw")]
+position = Vector2(544, -29)
+rope_length = 14
+
+[node name="EnemySpawner" type="Node2D" parent="TestStage"]
+script = ExtResource("3_mb6vq")
+
+[node name="Timer" type="Timer" parent="TestStage/EnemySpawner"]
+
+[node name="Player" type="CharacterBody2D" parent="TestStage"]
+
+[connection signal="timeout" from="TestStage/EnemySpawner/Timer" to="TestStage/EnemySpawner" method="spawn_enemy"]
