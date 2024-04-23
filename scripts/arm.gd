@@ -4,17 +4,21 @@ extends Node2D
 @onready var attack_range_area = $AttackRangeArea
 @onready var ar_shape = $AttackRangeArea/CollisionShape2D
 @onready var sprite_2d = $Sprite2D
+@onready var visuals = $".."
 
 var weapon
 var target_enemy
-var rotate_speed = 3*PI/2
+var rotate_speed = 5*PI/2
 var target_update_rate = .6
 var flipped = false
+
+var default_offset = Vector2(170,15)
 
 @onready var flip_range = Vector2(default_angle-PI/2, default_angle + PI/2)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	attack_range_area.visible=true
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -22,24 +26,25 @@ func _physics_process(delta):
 	if !target_enemy or target_enemy.is_queued_for_deletion():
 		update_target_enemy()
 	update_target_enemy()
-	if target_enemy:
+	if target_enemy and target_enemy != null and !target_enemy.is_queued_for_deletion() and !target_enemy.dying:
 		var ang = global_position.angle_to_point(target_enemy.position)
-		rotation = rotate_toward(rotation,ang,rotate_speed*delta)
-	
+		rotation = ang #= rotate_toward(rotation,ang,rotate_speed*delta)
+	else:
+		rotation = rotate_toward(rotation,default_angle,rotate_speed*delta)
 	#var trot = (rotation+2*PI) / (2*PI)
 	#while trot > 1:
 		#trot -= 1
 	#trot = trot * 2 * PI
 
-	if abs(angle_difference(rotation, default_angle)) > PI/2 and !flipped:
-		print("flip")
-		flipped = true
-		#sprite_2d.scale.y *= -1
-		sprite_2d.flip_v = !sprite_2d.flip_v
-	elif abs(angle_difference(rotation, default_angle)) < PI/2 and flipped:
-		print("unflip")
-		flipped = false
-		sprite_2d.flip_v = !sprite_2d.flip_v
+	#if abs(angle_difference(rotation, default_angle)) > PI/2 and !flipped:
+		##print("flip")
+		#flipped = true
+		##sprite_2d.scale.y *= -1
+		#sprite_2d.flip_v = !sprite_2d.flip_v
+	#elif abs(angle_difference(rotation, default_angle)) < PI/2 and flipped:
+		##print("unflip")
+		#flipped = false
+		#sprite_2d.flip_v = !sprite_2d.flip_v
 
 func weapon_change(weapon_node):
 	weapon = weapon_node

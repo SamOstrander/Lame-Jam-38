@@ -1,11 +1,18 @@
 extends RigidBody2D
 
 var enemy
-var release_height = 420
+var release_height = 300
+
+const ENEMY = preload("res://scenes/units/enemy.tscn")
+const sprites = [preload("res://assets/sprites/the_carptain.png"),preload("res://assets/sprites/mimic boyo scarred.png")]
+@onready var sprite_2d = $Sprite2D
+var spr
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("ready")
+	spr = sprites.pick_random()
+	sprite_2d.texture = spr
+	
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -19,7 +26,6 @@ func _process(delta):
 		#queue_free()
 			#release
 		if(get_node("PinJoint2D")):
-			print("free")
 			get_node("PinJoint2D").queue_free()
 
 #on collision (ideally with floor), get current rotation, destroy self, replace with actual enemy, tween from current angle to flattened against floor, fix angle and then tween to straight up. 
@@ -29,5 +35,11 @@ func _on_body_entered(body):
 	#enemy.rotation = current_rotation
 	#enemy.spawning = true
 	#enemy.animationplayer.play(
-	
+	var enemy = ENEMY.instantiate()
+	enemy.get_node("Sprite2D").texture = spr
+	enemy.global_position = global_position
+	get_parent().add_child(enemy)
+	queue_free()
 	pass # Replace with function body.
+
+

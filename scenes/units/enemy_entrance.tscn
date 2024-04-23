@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://hmic737g84x2"]
 
 [ext_resource type="Script" path="res://scripts/EnemyEntrance.gd" id="1_o3e6p"]
-[ext_resource type="Texture2D" uid="uid://qm63bvkoh8cj" path="res://icon.svg" id="2_c2w60"]
+[ext_resource type="Texture2D" uid="uid://ckada77jjdox5" path="res://assets/sprites/the_carptain.png" id="2_hsev6"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dnni6"]
 rough = true
 absorbent = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f65jh"]
-size = Vector2(4, 4)
+size = Vector2(58, 144)
 
 [node name="EnemyEntrance" type="RigidBody2D"]
 position = Vector2(572, 117)
@@ -22,7 +22,7 @@ script = ExtResource("1_o3e6p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_c2w60")
+texture = ExtResource("2_hsev6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_f65jh")

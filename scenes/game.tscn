@@ -1,30 +1,31 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvsb2bryj3n26"]
+[gd_scene load_steps=6 format=3 uid="uid://cvsb2bryj3n26"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_1ucmo"]
 [ext_resource type="Script" path="res://scripts/EnemySpawner.gd" id="3_mb6vq"]
 [ext_resource type="PackedScene" uid="uid://chja7cptks12" path="res://scenes/units/player.tscn" id="4_efqt8"]
-[ext_resource type="Texture2D" uid="uid://qm63bvkoh8cj" path="res://icon.svg" id="4_yq5it"]
-[ext_resource type="Script" path="res://scripts/TempEnemy.gd" id="5_wrbr5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7gqvr"]
+size = Vector2(146, 861)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yyn66"]
-size = Vector2(1298, 116)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_wrai7"]
-radius = 69.0
+size = Vector2(9043, 193)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_1ucmo")
 
 [node name="TestStage" type="Node2D" parent="."]
 
-[node name="Node2D" type="Node2D" parent="TestStage"]
+[node name="StaticBody2D2" type="StaticBody2D" parent="TestStage"]
+position = Vector2(-4033, 350)
 
-[node name="EnemySpawner" type="Node2D" parent="TestStage"]
-script = ExtResource("3_mb6vq")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestStage/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_7gqvr")
 
-[node name="Timer" type="Timer" parent="TestStage/EnemySpawner"]
-wait_time = 4.0
-autostart = true
+[node name="StaticBody2D3" type="StaticBody2D" parent="TestStage"]
+position = Vector2(5210, 350)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestStage/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_7gqvr")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="TestStage"]
 position = Vector2(572, 640)
@@ -32,35 +33,33 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestStage/StaticBody2D"]
+position = Vector2(11.5, 38.5)
 shape = SubResource("RectangleShape2D_yyn66")
 
-[node name="Sprite2D" type="Sprite2D" parent="TestStage/StaticBody2D"]
-scale = Vector2(9.92188, 1)
-texture = ExtResource("4_yq5it")
+[node name="ColorRect" type="ColorRect" parent="TestStage/StaticBody2D"]
+offset_left = -4539.0
+offset_top = -60.0
+offset_right = 4563.0
+offset_bottom = 133.0
+color = Color(0.321569, 0.141176, 0.0509804, 1)
+
+[node name="Pickups" type="Node2D" parent="TestStage"]
+
+[node name="Node2D" type="Node2D" parent="TestStage"]
+
+[node name="EnemySpawner" type="Node2D" parent="TestStage"]
+script = ExtResource("3_mb6vq")
+
+[node name="SideTimer" type="Timer" parent="TestStage/EnemySpawner"]
+wait_time = 3.0
+autostart = true
+
+[node name="Timer" type="Timer" parent="TestStage/EnemySpawner"]
+wait_time = 4.0
+autostart = true
 
 [node name="Player" parent="TestStage" instance=ExtResource("4_efqt8")]
 position = Vector2(559, 457)
 
-[node name="TempEnemy" type="CharacterBody2D" parent="TestStage" groups=["enemy"]]
-position = Vector2(963, 440)
-script = ExtResource("5_wrbr5")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TestStage/TempEnemy"]
-shape = SubResource("CircleShape2D_wrai7")
-
-[node name="Sprite2D" type="Sprite2D" parent="TestStage/TempEnemy"]
-modulate = Color(1, 0, 0, 1)
-texture = ExtResource("4_yq5it")
-
-[node name="TempEnemy2" type="CharacterBody2D" parent="TestStage" groups=["enemy"]]
-position = Vector2(110, 458)
-script = ExtResource("5_wrbr5")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TestStage/TempEnemy2"]
-shape = SubResource("CircleShape2D_wrai7")
-
-[node name="Sprite2D" type="Sprite2D" parent="TestStage/TempEnemy2"]
-modulate = Color(1, 0, 0, 1)
-texture = ExtResource("4_yq5it")
-
+[connection signal="timeout" from="TestStage/EnemySpawner/SideTimer" to="TestStage/EnemySpawner" method="spawn_enemy_ground"]
 [connection signal="timeout" from="TestStage/EnemySpawner/Timer" to="TestStage/EnemySpawner" method="spawn_enemy"]

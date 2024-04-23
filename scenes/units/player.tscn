@@ -1,30 +1,63 @@
-[gd_scene load_steps=12 format=3 uid="uid://chja7cptks12"]
+[gd_scene load_steps=20 format=3 uid="uid://chja7cptks12"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_0eebk"]
-[ext_resource type="Texture2D" uid="uid://qm63bvkoh8cj" path="res://icon.svg" id="1_4sjpn"]
 [ext_resource type="Script" path="res://scripts/arm.gd" id="2_ffkou"]
-[ext_resource type="Script" path="res://scripts/Weapon.gd" id="3_b3jux"]
+[ext_resource type="Texture2D" uid="uid://clnhvm8dd58l3" path="res://assets/sprites/octo_mc.png" id="2_fo34k"]
+[ext_resource type="Texture2D" uid="uid://cd7fug5ov2oyr" path="res://assets/sprites/gunarm2.png" id="4_lgu62"]
+[ext_resource type="Script" path="res://scripts/PullRange.gd" id="5_2jhja"]
+[ext_resource type="PackedScene" uid="uid://p8betbuhmvug" path="res://scenes/units/player/gun_wep.tscn" id="5_8g5u3"]
+[ext_resource type="Script" path="res://scripts/PickupRange.gd" id="6_gwdep"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4qdnr"]
-size = Vector2(120, 120)
+size = Vector2(76, 128)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_k581y"]
-radius = 421.96
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_wvd8q"]
-radius = 421.96
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_3dunx"]
 radius = 421.96
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_prqy4"]
 radius = 421.96
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvd8q"]
+radius = 421.96
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_ak3o1"]
+radius = 421.96
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3dunx"]
 radius = 421.96
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_udln8"]
 radius = 421.96
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3cmic"]
+radius = 198.162
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4dval"]
+radius = 56.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymm36"]
+size = Vector2(128, 124)
+
+[sub_resource type="Animation" id="Animation_kvpmg"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.0872665, 0.0872665, -0.0872665]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ivhok"]
+_data = {
+"walk": SubResource("Animation_kvpmg")
+}
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_0eebk")
@@ -32,106 +65,158 @@ script = ExtResource("1_0eebk")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4qdnr")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_4sjpn")
+[node name="Visuals" type="Node2D" parent="."]
+rotation = -0.0872665
 
-[node name="ArmBaseUL" type="Node2D" parent="."]
-position = Vector2(-59, -57)
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_fo34k")
+
+[node name="ArmBaseUL" type="Node2D" parent="Visuals"]
+position = Vector2(-33, -8)
 rotation = 3.14159
 script = ExtResource("2_ffkou")
 
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseUL"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
-flip_v = true
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseUL"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
 
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseUL"]
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseUL"]
+visible = false
 rotation = 3.14159
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseUL/AttackRangeArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseUL/AttackRangeArea"]
 shape = SubResource("CircleShape2D_k581y")
 
-[node name="Weapon" type="Node2D" parent="ArmBaseUL"]
-position = Vector2(128, 0.999989)
-script = ExtResource("3_b3jux")
+[node name="Weapon" parent="Visuals/ArmBaseUL" instance=ExtResource("5_8g5u3")]
 
-[node name="Timer" type="Timer" parent="ArmBaseUL/Weapon"]
-
-[node name="ArmBaseML" type="Node2D" parent="."]
-position = Vector2(-63, -19)
-rotation = 3.14159
+[node name="ArmBaseUR" type="Node2D" parent="Visuals"]
+position = Vector2(28, -28)
 script = ExtResource("2_ffkou")
 
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseML"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
-flip_v = true
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseUR"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
 
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseML"]
-rotation = 3.14159
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseUR"]
+visible = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseML/AttackRangeArea"]
-shape = SubResource("CircleShape2D_wvd8q")
-
-[node name="ArmBaseBL" type="Node2D" parent="."]
-position = Vector2(-64, 22)
-rotation = 3.14159
-script = ExtResource("2_ffkou")
-
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseBL"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
-flip_v = true
-
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseBL"]
-rotation = 3.14159
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseBL/AttackRangeArea"]
-shape = SubResource("CircleShape2D_3dunx")
-
-[node name="ArmBaseUR" type="Node2D" parent="."]
-position = Vector2(59, -57)
-script = ExtResource("2_ffkou")
-
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseUR"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
-
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseUR"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseUR/AttackRangeArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseUR/AttackRangeArea"]
 shape = SubResource("CircleShape2D_prqy4")
 
-[node name="ArmBaseMR" type="Node2D" parent="."]
-position = Vector2(61, -21)
+[node name="Weapon2" parent="Visuals/ArmBaseUR" instance=ExtResource("5_8g5u3")]
+position = Vector2(68, -6)
+
+[node name="ArmBaseML" type="Node2D" parent="Visuals"]
+position = Vector2(-24, 4)
+rotation = 3.14159
 script = ExtResource("2_ffkou")
 
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseMR"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseML"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
 
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseMR"]
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseML"]
+visible = false
+rotation = 3.14159
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseMR/AttackRangeArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseML/AttackRangeArea"]
+shape = SubResource("CircleShape2D_wvd8q")
+
+[node name="Weapon3" parent="Visuals/ArmBaseML" instance=ExtResource("5_8g5u3")]
+position = Vector2(68, -6)
+
+[node name="ArmBaseMR" type="Node2D" parent="Visuals"]
+position = Vector2(31, -9)
+script = ExtResource("2_ffkou")
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseMR"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
+
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseMR"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseMR/AttackRangeArea"]
 shape = SubResource("CircleShape2D_ak3o1")
 
-[node name="ArmBaseBR" type="Node2D" parent="."]
-position = Vector2(60, 24)
+[node name="Weapon4" parent="Visuals/ArmBaseMR" instance=ExtResource("5_8g5u3")]
+position = Vector2(68, -6)
+
+[node name="ArmBaseBL" type="Node2D" parent="Visuals"]
+position = Vector2(-6, 9)
+rotation = 3.14159
 script = ExtResource("2_ffkou")
 
-[node name="Sprite2D" type="Sprite2D" parent="ArmBaseBR"]
-scale = Vector2(1, 0.203125)
-texture = ExtResource("1_4sjpn")
-offset = Vector2(64, 0)
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseBL"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
 
-[node name="AttackRangeArea" type="Area2D" parent="ArmBaseBR"]
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseBL"]
+visible = false
+rotation = 3.14159
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArmBaseBR/AttackRangeArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseBL/AttackRangeArea"]
+shape = SubResource("CircleShape2D_3dunx")
+
+[node name="Weapon5" parent="Visuals/ArmBaseBL" instance=ExtResource("5_8g5u3")]
+position = Vector2(68, -6)
+
+[node name="ArmBaseBR" type="Node2D" parent="Visuals"]
+position = Vector2(18, 3)
+script = ExtResource("2_ffkou")
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals/ArmBaseBR"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_lgu62")
+offset = Vector2(170, 15)
+
+[node name="AttackRangeArea" type="Area2D" parent="Visuals/ArmBaseBR"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/ArmBaseBR/AttackRangeArea"]
 shape = SubResource("CircleShape2D_udln8")
 
-[connection signal="timeout" from="ArmBaseUL/Weapon/Timer" to="ArmBaseUL/Weapon" method="trigger_attack"]
+[node name="Weapon6" parent="Visuals/ArmBaseBR" instance=ExtResource("5_8g5u3")]
+position = Vector2(68, -6)
+
+[node name="PullRange" type="Area2D" parent="."]
+script = ExtResource("5_2jhja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PullRange"]
+shape = SubResource("CircleShape2D_3cmic")
+
+[node name="PickupRange" type="Area2D" parent="."]
+script = ExtResource("6_gwdep")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupRange"]
+shape = SubResource("CircleShape2D_4dval")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_top = 0
+limit_bottom = 648
+
+[node name="HurtBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("RectangleShape2D_ymm36")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ivhok")
+}
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
+
+[node name="InvulnTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="area_entered" from="PullRange" to="PullRange" method="_on_area_entered"]
+[connection signal="area_entered" from="PickupRange" to="PickupRange" method="_on_area_entered"]
+[connection signal="timeout" from="InvulnTimer" to="." method="invuln_up"]
